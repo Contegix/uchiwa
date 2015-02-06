@@ -5,7 +5,7 @@ import (
 
 	"github.com/palourde/auth"
 	"github.com/palourde/logger"
-	"github.com/sensu/uchiwa/uchiwa"
+	"github.com/contegix/uchiwa/uchiwa"
 )
 
 func main() {
