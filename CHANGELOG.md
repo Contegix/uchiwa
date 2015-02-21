@@ -1,3 +1,25 @@
+### 0.5.1 (2015-02-21)
+
+#### Features
+- Add *Silenced Clients* option to the Hide menu and show the acknowledgment status of the client in the events view - [Issue #12](https://github.com/sensu/uchiwa-web/pull/12)
+
+#### Bug Fixes
+- Register *uchiwa-web* as a bower package to prevent dependencies issues - [Issue #272](https://github.com/sensu/uchiwa/issues/272)
+- Fix build issue with 0.5.0 release - [Issue #273](https://github.com/sensu/uchiwa/issues/273)
+
+### 0.5.0 (2015-02-14)
+
+#### Features
+- Add custom date functionality for stashes - [Issue #251](https://github.com/sensu/uchiwa/pull/251)
+- Aggregates support - [Issue #255](https://github.com/sensu/uchiwa/pull/255)
+- Use JSON Web Tokens (JWT) instead of HTTP basic authentication and implement a login page - [Issue #8](https://github.com/sensu/uchiwa-web/pull/8)
+
+#### Bug Fixes
+- Catch possible exception while asserting the check name - [Issue #259](https://github.com/sensu/uchiwa/pull/259)
+- Display images when an URL has a port number - [Issue #2](https://github.com/sensu/uchiwa-web/pull/2)
+- Hide events with no client and no check - [Issue #9](https://github.com/sensu/uchiwa-web/pull/9)
+- Client names may not be unique - [Issue #11](https://github.com/sensu/uchiwa-web/pull/11)
+
 ### 0.4.1 (2015-01-16)
 
 #### Features

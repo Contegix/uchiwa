@@ -1,6 +1,5 @@
 {
   "name": "uchiwa",
-  "private": true,
   "dependencies": {
     "uchiwa-web": "contegix/uchiwa-web#*"
   }
