@@ -6,6 +6,11 @@ import (
 	"github.com/palourde/auth"
 	"github.com/palourde/logger"
 	"github.com/contegix/uchiwa/uchiwa"
+	"github.com/sensu/uchiwa/uchiwa/audit"
+	"github.com/sensu/uchiwa/uchiwa/auth"
+	"github.com/sensu/uchiwa/uchiwa/config"
+	"github.com/sensu/uchiwa/uchiwa/filters"
+	"github.com/sensu/uchiwa/uchiwa/logger"
 )
 
 func main() {
@@ -13,21 +18,37 @@ func main() {
 	publicPath := flag.String("p", "public", "Full or relative path to the public directory")
 	flag.Parse()
 
-	config, err := uchiwa.LoadConfig(*configFile)
+	config, err := config.Load(*configFile)
 	if err != nil {
 		logger.Fatal(err)
 	}
 
-	uchiwa.New(config)
-	go uchiwa.Fetch(config.Uchiwa.Refresh, func() {})
+	logger.Debug("Debug mode enabled")
+
+	u := uchiwa.Init(config)
 
 	authentication := auth.New()
-
 	if config.Uchiwa.Auth == "simple" {
-		authentication.Simple(config.Uchiwa.User, config.Uchiwa.Pass)
+		authentication.Simple(config.Uchiwa.Users)
 	} else {
 		authentication.None()
 	}
 
-	uchiwa.WebServer(config, publicPath, authentication)
+	// Audit
+	audit.Log = audit.LogMock
+
+	// filters
+	uchiwa.FilterAggregates = filters.FilterAggregates
+	uchiwa.FilterChecks = filters.FilterChecks
+	uchiwa.FilterClients = filters.FilterClients
+	uchiwa.FilterDatacenters = filters.FilterDatacenters
+	uchiwa.FilterEvents = filters.FilterEvents
+	uchiwa.FilterStashes = filters.FilterStashes
+	uchiwa.FilterSubscriptions = filters.FilterSubscriptions
+
+	uchiwa.FilterGetRequest = filters.GetRequest
+	uchiwa.FilterPostRequest = filters.PostRequest
+	uchiwa.FilterSensuData = filters.SensuData
+
+	u.WebServer(publicPath, authentication)
 }

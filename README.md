@@ -6,13 +6,15 @@ This repository contains the backend, written in Go.
 See [uchiwa-web](https://github.com/sensu/uchiwa-web) for the AngularJS web frontend.
 
 [![Build Status](https://travis-ci.org/sensu/uchiwa.svg?branch=master)](https://travis-ci.org/sensu/uchiwa)
+[![Coverage Status](https://coveralls.io/repos/sensu/uchiwa/badge.svg?branch=master)](https://coveralls.io/r/sensu/uchiwa?branch=master)
+[![Download](https://api.bintray.com/packages/palourde/uchiwa/uchiwa/images/download.svg) ](https://uchiwa.io/#/download)
 
 ## Getting Started
 
 See [Uchiwa Docs](http://docs.uchiwa.io/en/latest/getting-started/)
 
 ## Configuration
-See [Uchiwa Docs](http://docs.uchiwa.io/en/latest/configuration/examples/)
+See [Uchiwa Docs](http://docs.uchiwa.io/en/latest/configuration/overview/)
 
 ## Contributing
 See [Uchiwa Docs](http://docs.uchiwa.io/en/latest/contributing/)

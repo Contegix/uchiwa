@@ -1,3 +1,137 @@
+### 0.11.2 (2015-10-04)
+#### Bug Fixes
+- Prevent undefined object when evaluating scope.metrics object in SidebarController - [Issue #387](https://github.com/sensu/uchiwa/issues/387)
+- Simplify Dockerfile and upgrade golang docker image to 1.5.1 - [Issue #391](https://github.com/sensu/uchiwa/issues/391)
+
+### 0.11.1 (2015-09-23)
+#### Bug Fixes
+- Redirection to the login page should remove all query strings - [Issue #385](https://github.com/sensu/uchiwa/issues/385)
+- Add versioning to JS & CSS files to avoid caching with upgrades - [Issue #386](https://github.com/sensu/uchiwa/issues/386)
+- Set *success* style to the events sidebar icon when we have no events
+- Prevent errors when an API endpoint returns null
+- Dependency cleanup
+
+### 0.11.0 (2015-09-22)
+#### Features
+- Implement a RESTful API and remove the *get_sensu* endpoint for Uchiwa backend - [Issue #378](https://github.com/sensu/uchiwa/pull/378)
+- Major frontend performance and stability improvement: use the newer Uchiwa RESTful API and store data into $scope instead of $rootScope - [Issue #72](https://github.com/sensu/uchiwa-web/pull/72)
+- Allow bulk removal of stashes - [Issue #65](https://github.com/sensu/uchiwa-web/pull/65)
+- Also display client's images in a dedicated panels on the client view - [Issue #361](https://github.com/sensu/uchiwa/issues/361)
+- Add progress bar into aggregate view - [Issue #69](https://github.com/sensu/uchiwa-web/pull/69)
+- Upgrade to Go 1.5.1
+
+#### Bug Fixes
+- Allow text selection without immediately firing ng-click - [Issue #262](https://github.com/sensu/uchiwa/issues/262)
+- Break long datacenter name into multiple lines - [Issue #368](https://github.com/sensu/uchiwa/issues/368)
+- Add username to stash content - [Issue #356](https://github.com/sensu/uchiwa/issues/356)
+- The /results Sensu API endpoint is not required yet - [Issue #379](https://github.com/sensu/uchiwa/pull/379)
+- Two events with the same client and check names could be mixed - [Issue #375](https://github.com/sensu/uchiwa/issues/375)
+- Recover from an unexpected type assertion when processing a client
+- Prevent multiple status code within a single HTTP response on the /health endpoint
+- Properly display username in navbar if authentication is enabled
+
+### 0.10.4 (2015-09-01)
+#### Bug Fixes
+- Order alphabetically the items in the checks filter - [Issue #62](https://github.com/sensu/uchiwa-web/pull/62)
+- Fix client view table for RO users - [Issue #63](https://github.com/sensu/uchiwa-web/pull/63)
+- Visual improvements to client view when resizing to a narrow view - [Issue #64](https://github.com/sensu/uchiwa-web/pull/64)
+- Fix favicon for Firefox - [Issue #376](https://github.com/sensu/uchiwa/pull/367)
+- Add support for Sensu Enteprise OpenLDAP driver - [Issue #369](https://github.com/sensu/uchiwa/pull/369)
+- Add support for Sensu Enteprise audit logging - [Issue #370](https://github.com/sensu/uchiwa/pull/370)
+
+### 0.10.3 (2015-08-03)
+#### Features
+- Add status filter on the clients and events views - [Issue #61](https://github.com/sensu/uchiwa-web/pull/61)
+- Add support for Sensu Enterprise dashboard
+
+### 0.10.2 (2015-07-23)
+#### Features
+- Add username to stash content - [Issue #356](https://github.com/sensu/uchiwa/issues/356)
+- Replace silenced and critical icons - [Issue #56](https://github.com/sensu/uchiwa-web/pull/56)
+- Add support for audit logging - Sensu Enterprise Dashboard
+
+#### Bug Fixes
+- Reimplement iframe support - [Issue #354](https://github.com/sensu/uchiwa/issues/354)
+- Display any error with the http.ListenAndServe method - [Issue #352](https://github.com/sensu/uchiwa/issues/352)
+
+### 0.10.1 (2015-06-30)
+#### Bug Fixes
+- Fix check result view for standalone checks - [Issue #350](https://github.com/sensu/uchiwa/issues/350)
+
+### 0.10.0 (2015-06-29)
+
+#### Features
+- Multiple users (RO & RW) can be defined in the configuration - [Issue #343](https://github.com/sensu/uchiwa/pull/343)
+- The theme setting is now saved in a cookie - [Issue #331](https://github.com/sensu/uchiwa/issues/331)
+- Display the output of all checks in the check result view - [Issue #346](https://github.com/sensu/uchiwa/issues/346)
+- Enhancements to the check result images - [Issue #50](https://github.com/sensu/uchiwa-web/pull/50)
+
+#### Bug Fixes
+- The info view might have been incomplete - [Issue #51](https://github.com/sensu/uchiwa-web/pull/51)
+- Disable autocapitalization and autocorrection on the login view - [Issue #296](https://github.com/sensu/uchiwa/issues/296)
+- Remove unsupported characters in datacenter name - [Issue #279](https://github.com/sensu/uchiwa/issues/279)
+- Continue to pull the client details even when an error is returned - [Issue #265](https://github.com/sensu/uchiwa/issues/265)
+
+### 0.9.1 (2015-06-10)
+#### Bug Fixes
+- Performance issues - [Issue #337](https://github.com/sensu/uchiwa/issues/337)
+
+### 0.9.0 (2015-06-09)
+#### Features
+- Display the output for all checks - [Issue #322](https://github.com/sensu/uchiwa/issues/322)
+- Various fixes and improvements to the backend - [Issue #330](https://github.com/sensu/uchiwa/pull/330)
+  - Godep is now used to manage vendored dependencies
+  - Support for Sensu Enterprise dashboard features
+  - Refactoring of the Go packages
+- Allow filtering by check on the checks view - [Issue #45](https://github.com/sensu/uchiwa-web/pull/45)
+- Include a result count when searching - [Issue #46](https://github.com/sensu/uchiwa-web/pull/46)
+
+#### Bug Fixes
+- Better handling of invalid events - [Issue #332](https://github.com/sensu/uchiwa/issues/332)
+- A stash can only start now and not in the future - [Issue #48](https://github.com/sensu/uchiwa-web/pull/48)
+
+### 0.8.1 (2015-05-05)
+#### Features
+- Add profile picture to the navbar when logged - [Issue #44](https://github.com/sensu/uchiwa-web/pull/44)
+
+#### Bug Fixes
+- Allow stash creation with no expiration - [Issue #319](https://github.com/sensu/uchiwa/issues/319)
+- Upgrade to angular-bootstrap 0.13.0 - [Issue #319](https://github.com/sensu/uchiwa/issues/319)
+
+### 0.8.0 (2015-04-29)
+#### Features
+- Import the palourde/auth library within the Uchiwa repository - [Issue #314](https://github.com/sensu/uchiwa/pull/314)
+- Refactoring of the stashes API endpoints - [Issue #317](https://github.com/sensu/uchiwa/pull/317)
+- Add relative times to stashes and clients views - [Issue #38](https://github.com/sensu/uchiwa-web/pull/38)
+- Add support for Github authentication driver (Sensu Enterprise)
+- Add support for LDAP authentication driver (Sensu Enterprise)
+
+#### Bug Fixes
+- Allow stash creation with expiration longer than a few days - [Issue #301](https://github.com/sensu/uchiwa/issues/301)
+- Datacenter filter now performs a strict comparison - [Issue #307](https://github.com/sensu/uchiwa/issues/307)
+- Resolved events are now cleared from the clients view - [Issue #309](https://github.com/sensu/uchiwa/issues/309)
+
+### 0.7.1 (2015-04-01)
+#### Features
+- Show relative times for events - [Issue #28](https://github.com/sensu/uchiwa-web/pull/28)
+- Add datacenters view - [Issue #30](https://github.com/sensu/uchiwa-web/pull/30)
+- Order events by status, then by most recent - [Issue #33](https://github.com/sensu/uchiwa-web/pull/33)
+
+#### Bug Fixes
+- Remove *standalone* property from checks view - [Issue #29](https://github.com/sensu/uchiwa-web/pull/29)
+- Show logout button when authentication is enabled - [Issue #29](https://github.com/sensu/uchiwa-web/pull/29)
+- Ship Google fonts with Uchiwa - [Issue #35](https://github.com/sensu/uchiwa-web/pull/35)
+
+### 0.7.0 (2015-03-13)
+#### Features
+- Reorganize the navbar and sidebar - [Issue #22](https://github.com/sensu/uchiwa-web/pull/22)
+- Panels styling - [Issue #23](https://github.com/sensu/uchiwa-web/pull/23)
+- Improvements to the aggregates view - [Issue #23](https://github.com/sensu/uchiwa-web/pull/23)
+
+#### Bug Fixes
+- Unselect events after action in events view - [Issue #20](https://github.com/sensu/uchiwa-web/pull/20)
+- Fix stash expiration timestamp in stashes view - [Issue #25](https://github.com/sensu/uchiwa-web/pull/25)
+
 ### 0.6.0 (2015-02-26)
 #### Features
 - Upgrade to AngularJS 1.3 - [Issue #160](https://github.com/sensu/uchiwa/issues/160)

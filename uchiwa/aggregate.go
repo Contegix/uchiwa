@@ -1,12 +1,10 @@
 package uchiwa
 
-import (
-	"github.com/palourde/logger"
-)
+import "github.com/sensu/uchiwa/uchiwa/logger"
 
-// GetAggreate retrieves a list of issued timestamps from a specified DC
-func GetAggregate(check string, dc string) (*[]interface {}, error) {
-	api, err := findDcFromString(&dc)
+// GetAggregate retrieves a list of issued timestamps from a specified DC
+func (u *Uchiwa) GetAggregate(check string, dc string) (*[]interface{}, error) {
+	api, err := getAPI(u.Datacenters, dc)
 	if err != nil {
 		logger.Warning(err)
 		return nil, err
@@ -21,9 +19,9 @@ func GetAggregate(check string, dc string) (*[]interface {}, error) {
 	return &aggregate, nil
 }
 
-// GetAggreateByIssued retrieves aggregate check info from a specified DC
-func GetAggregateByIssued(check string, issued string, dc string) (*map[string]interface {}, error) {
-	api, err := findDcFromString(&dc)
+// GetAggregateByIssued retrieves aggregate check info from a specified DC
+func (u *Uchiwa) GetAggregateByIssued(check string, issued string, dc string) (*map[string]interface{}, error) {
+	api, err := getAPI(u.Datacenters, dc)
 	if err != nil {
 		logger.Warning(err)
 		return nil, err
