@@ -3,8 +3,6 @@ package main
 import (
 	"flag"
 
-	"github.com/palourde/auth"
-	"github.com/palourde/logger"
 	"github.com/contegix/uchiwa/uchiwa"
 	"github.com/sensu/uchiwa/uchiwa/audit"
 	"github.com/sensu/uchiwa/uchiwa/auth"
