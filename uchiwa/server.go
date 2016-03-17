@@ -223,7 +223,7 @@ func (u *Uchiwa) configHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		if resources[2] == "auth" {
-			fmt.Fprintf(w, "%s", u.PublicConfig.Uchiwa.Auth)
+			fmt.Fprintf(w, "%s", u.PublicConfig.Uchiwa.Auth.Driver)
 		} else {
 			http.Error(w, "", http.StatusNotFound)
 			return
@@ -336,6 +336,70 @@ func (u *Uchiwa) metricsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Request
+func (u *Uchiwa) requestHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "", http.StatusBadRequest)
+		return
+	}
+
+	decoder := json.NewDecoder(r.Body)
+	var data structs.CheckExecution
+	err := decoder.Decode(&data)
+	if err != nil {
+		http.Error(w, "Could not decode body", http.StatusInternalServerError)
+		return
+	}
+
+	// verify that the authenticated user is authorized to access this resource
+	token := auth.GetTokenFromContext(r)
+	unauthorized := FilterGetRequest(data.Dc, token)
+	if unauthorized {
+		http.Error(w, fmt.Sprint(""), http.StatusNotFound)
+		return
+	}
+
+	err = u.IssueCheckExecution(data)
+	if err != nil {
+		http.Error(w, "Could not create the stash", http.StatusNotFound)
+		return
+	}
+
+	return
+}
+
+// Results
+func (u *Uchiwa) resultsHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "DELETE" {
+		http.Error(w, "", http.StatusBadRequest)
+		return
+	}
+
+	resources := strings.Split(r.URL.Path, "/")
+	if len(resources) != 5 {
+		http.Error(w, "", http.StatusBadRequest)
+		return
+	}
+
+	check := resources[4]
+	client := resources[3]
+	dc := resources[2]
+
+	token := auth.GetTokenFromContext(r)
+
+	unauthorized := FilterGetRequest(dc, token)
+	if unauthorized {
+		http.Error(w, fmt.Sprint(""), http.StatusNotFound)
+		return
+	}
+
+	err := u.DeleteCheckResult(check, client, dc)
+	if err != nil {
+		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+		return
+	}
+}
+
 // Stashes
 func (u *Uchiwa) stashesHandler(w http.ResponseWriter, r *http.Request) {
 	token := auth.GetTokenFromContext(r)
@@ -440,6 +504,8 @@ func (u *Uchiwa) WebServer(publicPath *string, auth auth.Config) {
 	http.Handle("/datacenters", auth.Authenticate(http.HandlerFunc(u.datacentersHandler)))
 	http.Handle("/events", auth.Authenticate(http.HandlerFunc(u.eventsHandler)))
 	http.Handle("/events/", auth.Authenticate(http.HandlerFunc(u.eventsHandler)))
+	http.Handle("/request", auth.Authenticate(http.HandlerFunc(u.requestHandler)))
+	http.Handle("/results/", auth.Authenticate(http.HandlerFunc(u.resultsHandler)))
 	http.Handle("/stashes", auth.Authenticate(http.HandlerFunc(u.stashesHandler)))
 	http.Handle("/stashes/", auth.Authenticate(http.HandlerFunc(u.stashesHandler)))
 	http.Handle("/subscriptions", auth.Authenticate(http.HandlerFunc(u.subscriptionsHandler)))
@@ -457,6 +523,11 @@ func (u *Uchiwa) WebServer(publicPath *string, auth auth.Config) {
 	http.Handle("/login", auth.GetIdentification())
 
 	listen := fmt.Sprintf("%s:%d", u.Config.Uchiwa.Host, u.Config.Uchiwa.Port)
-	logger.Infof("Uchiwa is now listening on %s", listen)
+	logger.Warningf("Uchiwa is now listening on %s", listen)
+
+	if u.Config.Uchiwa.SSL.CertFile != "" && u.Config.Uchiwa.SSL.KeyFile != "" {
+		logger.Fatal(http.ListenAndServeTLS(listen, u.Config.Uchiwa.SSL.CertFile, u.Config.Uchiwa.SSL.KeyFile, nil))
+	}
+
 	logger.Fatal(http.ListenAndServe(listen, nil))
 }

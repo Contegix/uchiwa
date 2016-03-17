@@ -1,8 +1,50 @@
+### 0.14.3 (2016-03-03)
+#### Features
+- Add a detailed stash view - [PR #90](https://github.com/sensu/uchiwa-web/pull/90)
+
+#### Bug Fixes
+- The HTML code for syntax highlighting was not always properly processed - [PR #91](https://github.com/sensu/uchiwa-web/pull/91)
+
+### 0.14.2 (2016-02-02)
+#### Features
+- Add support for serving content over HTTPS - [PR #441](https://github.com/sensu/uchiwa/pull/441)
+
+### 0.14.1 (2016-01-15)
+#### Bug Fixes
+- Fix version number for Debian packages - [Issue #26](https://github.com/sensu/uchiwa-build/issues/26)
+
+#### Other
+- Improved logging with log levels - [PR #425](https://github.com/sensu/uchiwa/pull/425)
+- Upgrade to Go 1.5.3
+
+### 0.14.0 (2016-01-05)
+#### Features
+- Load Uchiwa configuration from directories - [PR #416](https://github.com/sensu/uchiwa/pull/416)
+- Issue check requests from the checks view - [Issue #141](https://github.com/sensu/uchiwa/issues/141)
+- Delete a client check result, **requires Sensu 0.21.0 or later** - [PR #419](https://github.com/sensu/uchiwa/pull/419)
+
+### 0.13.0 (2015-11-22)
+#### Features
+- Datacenters high availability (support multiple APIs for the same datacenter) - [Issue #173](https://github.com/sensu/uchiwa/issues/173) - [Docs](http://docs.uchiwa.io/en/latest/configuration/sensu/#datacenters-high-availability)
+- Static RSA keys for the JSON Web Tokens signature - [Issue #394](https://github.com/sensu/uchiwa/issues/394) - [Docs](http://docs.uchiwa.io/en/latest/configuration/uchiwa/#static-rsa-keys)
+- Upgrade angular-toastr version to 1.6.0 - [PR #85](https://github.com/sensu/uchiwa-web/pull/85)
+
+#### Bug Fixes
+- Fix the _Hide Silenced Clients_ filter on the events view - [Issue #412](https://github.com/sensu/uchiwa/issues/412)
+- Display an error message when Uchiwa fails to contact its backend API - [PR #85](https://github.com/sensu/uchiwa-web/pull/85)
+- Make sure to update the health and metrics data on all views - [PR #86](https://github.com/sensu/uchiwa-web/pull/86)
+- Tweak the badges position on the sidebar
+
+### 0.12.1 (2015-11-05)
+#### Bug Fixes
+- History for all checks was not properly displayed on the client view - [Issue #404](https://github.com/sensu/uchiwa/issues/404)
+- Better handling of JIT clients with no timestamp - [Issue #79](https://github.com/sensu/uchiwa-web/pull/79)
+
 ### 0.12.0 (2015-10-20)
 #### Features
-- Major performance improvements on the frontend, especially when manipulating ten of thousands of elements - [Issue #399](https://github.com/sensu/uchiwa/issues/387)
-- Use pagination when querying the Sensu API - [Issue #397](https://github.com/sensu/uchiwa/issues/387)
-- Refactoring of the client history in order to display rich information for all checks, including standalones, on the client view. Deprecating support for Sensu 0.12. - [Issue #395](https://github.com/sensu/uchiwa/issues/387)
+- Major performance improvements on the frontend, especially when manipulating ten of thousands of elements - [Issue #399](https://github.com/sensu/uchiwa/issues/399)
+- Use pagination when querying the Sensu API - [Issue #397](https://github.com/sensu/uchiwa/issues/397)
+- Refactoring of the client history in order to display rich information for all checks, including standalones, on the client view. Deprecating support for Sensu 0.12. - [Issue #395](https://github.com/sensu/uchiwa/issues/395)
 
 ### 0.11.2 (2015-10-04)
 #### Bug Fixes

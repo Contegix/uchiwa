@@ -8,25 +8,20 @@ import (
 	"github.com/sensu/uchiwa/uchiwa/auth"
 	"github.com/sensu/uchiwa/uchiwa/config"
 	"github.com/sensu/uchiwa/uchiwa/filters"
-	"github.com/sensu/uchiwa/uchiwa/logger"
 )
 
 func main() {
 	configFile := flag.String("c", "./config.json", "Full or relative path to the configuration file")
+	configDir := flag.String("d", "", "Full or relative path to the configuration directory, or comma delimited directories")
 	publicPath := flag.String("p", "public", "Full or relative path to the public directory")
 	flag.Parse()
 
-	config, err := config.Load(*configFile)
-	if err != nil {
-		logger.Fatal(err)
-	}
-
-	logger.Debug("Debug mode enabled")
+	config := config.Load(*configFile, *configDir)
 
 	u := uchiwa.Init(config)
 
-	authentication := auth.New()
-	if config.Uchiwa.Auth == "simple" {
+	authentication := auth.New(config.Uchiwa.Auth)
+	if config.Uchiwa.Auth.Driver == "simple" {
 		authentication.Simple(config.Uchiwa.Users)
 	} else {
 		authentication.None()

@@ -17,6 +17,12 @@ type Daemon struct {
 	Enterprise  bool
 }
 
+// SensuDatacenter represents the sensu.Sensu struct
+type SensuDatacenter interface {
+	GetName() string
+	Metric(string) (*structs.SERawMetric, error)
+}
+
 // Start method fetches and builds Sensu data from each datacenter every Refresh seconds
 func (d *Daemon) Start(interval int, data chan *structs.Data) {
 	// immediately fetch the first set of data and send it over the data channel
@@ -25,9 +31,9 @@ func (d *Daemon) Start(interval int, data chan *structs.Data) {
 
 	select {
 	case data <- d.Data:
-		logger.Debug("Sending initial results on the 'data' channel")
+		logger.Trace("Sending initial results on the 'data' channel")
 	default:
-		logger.Debug("Could not send initial results on the 'data' channel")
+		logger.Trace("Could not send initial results on the 'data' channel")
 	}
 
 	// fetch new data every interval
@@ -40,9 +46,9 @@ func (d *Daemon) Start(interval int, data chan *structs.Data) {
 		// send the result over the data channel
 		select {
 		case data <- d.Data:
-			logger.Debug("Sending results on the 'data' channel")
+			logger.Trace("Sending results on the 'data' channel")
 		default:
-			logger.Debug("Could not send results on the 'data' channel")
+			logger.Trace("Could not send results on the 'data' channel")
 		}
 	}
 }
@@ -51,9 +57,11 @@ func (d *Daemon) Start(interval int, data chan *structs.Data) {
 func (d *Daemon) buildData() {
 	d.buildEvents()
 	d.buildClients()
+	d.buildChecks()
 	d.buildStashes()
 	d.BuildSubscriptions()
 	d.buildMetrics()
+	d.buildSEMetrics()
 }
 
 // getData retrieves all endpoints for every datacenter
@@ -61,43 +69,56 @@ func (d *Daemon) fetchData() {
 	d.Data.Health.Sensu = make(map[string]structs.SensuHealth, len(*d.Datacenters))
 
 	for _, datacenter := range *d.Datacenters {
+		logger.Infof("Updating the datacenter %s", datacenter.Name)
+
 		// set default health status
-		d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: datacenterErrorString}
+		d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: datacenterErrorString, Status: 2}
 		d.Data.Health.Uchiwa = "ok"
 
 		// fetch sensu data from the datacenter
 		stashes, err := datacenter.GetStashes()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
 		checks, err := datacenter.GetChecks()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
 		clients, err := datacenter.GetClients()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
 		events, err := datacenter.GetEvents()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
-		info, err := datacenter.Info()
+		info, err := datacenter.GetInfo()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
 		aggregates, err := datacenter.GetAggregates()
 		if err != nil {
-			logger.Warning(err)
+			logger.Warningf("Connection failed to the datacenter %s", datacenter.Name)
 			continue
 		}
 
-		d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: "ok"}
+		if d.Enterprise {
+			d.Data.SERawMetrics = *getEnterpriseMetrics(&datacenter, &d.Data.SERawMetrics)
+		}
+
+		// Determine the status of the datacenter
+		if !info.Redis.Connected {
+			d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: "Not connected to Redis", Status: 1}
+		} else if !info.Transport.Connected {
+			d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: "Not connected to the transport", Status: 1}
+		} else {
+			d.Data.Health.Sensu[datacenter.Name] = structs.SensuHealth{Output: "ok", Status: 0}
+		}
 
 		// add fetched data into d.Data interface
 		for _, v := range stashes {
@@ -134,4 +155,28 @@ func (d *Daemon) fetchData() {
 
 func (d *Daemon) resetData() {
 	d.Data = &structs.Data{}
+}
+
+// getEnterpriseMetrics retrieves Sensu Enterprise metrics
+func getEnterpriseMetrics(datacenter SensuDatacenter, metrics *structs.SERawMetrics) *structs.SERawMetrics {
+	var err error
+	m := make(map[string]*structs.SERawMetric)
+	metricsEndpoints := []string{"clients", "events", "keepalives_avg_60", "check_requests", "results"}
+
+	for _, metric := range metricsEndpoints {
+		m[metric], err = datacenter.Metric(metric)
+		if err != nil {
+			logger.Debugf("Could not retrieve the %s enterprise metrics. %s", metric, datacenter.GetName())
+			m[metric] = &structs.SERawMetric{}
+		}
+	}
+
+	m["events"].Name = datacenter.GetName()
+	metrics.Clients = append(metrics.Clients, m["clients"])
+	metrics.Events = append(metrics.Events, m["events"])
+	metrics.KeepalivesAVG60 = append(metrics.KeepalivesAVG60, m["keepalives_avg_60"])
+	metrics.Requests = append(metrics.Requests, m["check_requests"])
+	metrics.Results = append(metrics.Results, m["results"])
+
+	return metrics
 }
