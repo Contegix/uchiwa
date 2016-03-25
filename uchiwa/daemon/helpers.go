@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/sensu/uchiwa/uchiwa/logger"
-	"github.com/sensu/uchiwa/uchiwa/sensu"
+	"github.com/contegix/uchiwa/uchiwa/logger"
+	"github.com/contegix/uchiwa/uchiwa/sensu"
 )
 
 // FindDcFromInterface ...

@@ -1,8 +1,8 @@
 package config
 
 import (
-	"github.com/sensu/uchiwa/uchiwa/auth"
-	"github.com/sensu/uchiwa/uchiwa/structs"
+	"github.com/contegix/uchiwa/uchiwa/auth"
+	"github.com/contegix/uchiwa/uchiwa/structs"
 )
 
 // Config struct contains []SensuConfig and UchiwaConfig structs

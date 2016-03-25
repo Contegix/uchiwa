@@ -4,10 +4,10 @@ import (
 	"flag"
 
 	"github.com/contegix/uchiwa/uchiwa"
-	"github.com/sensu/uchiwa/uchiwa/audit"
-	"github.com/sensu/uchiwa/uchiwa/auth"
-	"github.com/sensu/uchiwa/uchiwa/config"
-	"github.com/sensu/uchiwa/uchiwa/filters"
+	"github.com/contegix/uchiwa/uchiwa/audit"
+	"github.com/contegix/uchiwa/uchiwa/auth"
+	"github.com/contegix/uchiwa/uchiwa/config"
+	"github.com/contegix/uchiwa/uchiwa/filters"
 )
 
 func main() {

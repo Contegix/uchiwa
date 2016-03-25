@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	"github.com/mitchellh/mapstructure"
-	"github.com/sensu/uchiwa/uchiwa/helpers"
-	"github.com/sensu/uchiwa/uchiwa/logger"
-	"github.com/sensu/uchiwa/uchiwa/structs"
+	"github.com/contegix/uchiwa/uchiwa/helpers"
+	"github.com/contegix/uchiwa/uchiwa/logger"
+	"github.com/contegix/uchiwa/uchiwa/structs"
 )
 
 // buildClients constructs clients objects for frontend consumption

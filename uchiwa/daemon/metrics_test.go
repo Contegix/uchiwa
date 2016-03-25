@@ -3,7 +3,7 @@ package daemon
 import (
 	"testing"
 
-	"github.com/sensu/uchiwa/uchiwa/structs"
+	"github.com/contegix/uchiwa/uchiwa/structs"
 	"github.com/stretchr/testify/assert"
 )
 

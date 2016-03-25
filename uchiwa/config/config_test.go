@@ -3,7 +3,7 @@ package config
 import (
 	"testing"
 
-	"github.com/sensu/uchiwa/uchiwa/auth"
+	"github.com/contegix/uchiwa/uchiwa/auth"
 	"github.com/stretchr/testify/assert"
 )
 

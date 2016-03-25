@@ -7,8 +7,8 @@ import (
 	"net"
 	"net/http"
 
-	"github.com/sensu/uchiwa/uchiwa/logger"
-	"github.com/sensu/uchiwa/uchiwa/structs"
+	"github.com/contegix/uchiwa/uchiwa/logger"
+	"github.com/contegix/uchiwa/uchiwa/structs"
 )
 
 // BuildClientsMetrics builds the metrics for the events
