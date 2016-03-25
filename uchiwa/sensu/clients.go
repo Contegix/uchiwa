@@ -4,7 +4,7 @@ import "fmt"
 
 // GetClients returns a slice of all clients
 func (s *Sensu) GetClients() ([]interface{}, error) {
-	return s.getSlice("clients", DefaultLimit)
+	return s.getSlice("clients", NoLimit)
 }
 
 // GetClient returns a map of a specific client corresponding to the provided client name
